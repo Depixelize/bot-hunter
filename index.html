@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Move your mouse pointer over the paragraph to display your x and y coordinates:</p>
+
+<p id="demo"></p>
+
+<button id="enterButton">Enter</button>
+<p id="hashOutput"></p>
+
+<script>
+let mousePath = [];
+
+// Function to record mouse movements
+document.onmousemove = function(e){
+    var x = e.pageX;
+    var y = e.pageY;
+    document.getElementById("demo").innerHTML = 'X =' + x + ' Y =' + y;
+    mousePath.push({x: x, y: y});
+}
+
+// Function to hash the mouse path and ensure positive hash
+function hashPath(path) {
+    let hash = 0, i, chr;
+    let pathString = JSON.stringify(path);
+    for (i = 0; i < pathString.length; i++) {
+        chr = pathString.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    // Ensure the hash is positive
+    return hash >>> 0;
+}
+
+// Function to handle button click
+function handleButtonClick() {
+    const pathHash = hashPath(mousePath);
+    
+    // Displaying the hash on the page
+    document.getElementById("hashOutput").innerHTML = 'Path Hash: ' + pathHash;
+
+    // Redirect to Google
+    window.location.href = 'https://google.com';
+}
+
+// Add event listener to the button
+document.getElementById('enterButton').addEventListener('click', handleButtonClick);
+</script>
+
+</body>
+</html>
